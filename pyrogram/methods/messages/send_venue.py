@@ -36,6 +36,7 @@ class SendVenue:
         foursquare_type: str = "",
         disable_notification: bool = None,
         reply_to_message_id: int = None,
+        topic_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -81,6 +82,9 @@ class SendVenue:
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message
 
+            topic_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -101,6 +105,8 @@ class SendVenue:
                     "me", latitude, longitude,
                     "Venue title", "Venue address")
         """
+
+        reply_to = utils.get_reply_to(topic_id, reply_to_message_id)
         r = await self.invoke(
             raw.functions.messages.SendMedia(
                 peer=await self.resolve_peer(chat_id),
@@ -117,7 +123,7 @@ class SendVenue:
                 ),
                 message="",
                 silent=disable_notification or None,
-                reply_to_msg_id=reply_to_message_id,
+                reply_to=reply_to,
                 random_id=self.rnd_id(),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
