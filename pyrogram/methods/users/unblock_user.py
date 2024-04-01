@@ -38,6 +38,9 @@ class UnblockUser:
                 For you yourself you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
+            my_stories_from (``bool``, *optional*):
+                Whether the peer should be blocked from viewing stories.
+
         Returns:
             ``bool``: True on success
 
