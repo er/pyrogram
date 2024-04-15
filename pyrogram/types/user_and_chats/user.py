@@ -170,6 +170,7 @@ class User(Object, Update):
         next_offline_date: datetime = None,
         username: str = None,
         usernames: Optional[List[str]] = None,
+        nft_usernames: Optional[List[str]] = None,
         language_code: str = None,
         emoji_status: Optional["types.EmojiStatus"] = None,
         dc_id: int = None,
@@ -198,6 +199,7 @@ class User(Object, Update):
         self.next_offline_date = next_offline_date
         self.username = username
         self.usernames = usernames
+        self.nft_usernames = nft_usernames
         self.language_code = language_code
         self.emoji_status = emoji_status
         self.dc_id = dc_id
@@ -239,6 +241,7 @@ class User(Object, Update):
             **User._parse_status(user.status, user.bot),
             username=username,
             usernames=[n.username for n in user.usernames],
+            nft_usernames=[n.username for n in user.usernames if n.editable is False],
             language_code=user.lang_code,
             emoji_status=types.EmojiStatus._parse(client, user.emoji_status),
             dc_id=getattr(user.photo, "dc_id", None),
